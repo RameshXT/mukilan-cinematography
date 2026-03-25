@@ -196,29 +196,6 @@ export default function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, [lightbox]);
 
-  useEffect(() => {
-    if (!lightbox) return;
-    let touchStartX = 0;
-    let touchStartY = 0;
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-    };
-    const handleTouchEnd = (e: TouchEvent) => {
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      const dy = e.changedTouches[0].clientY - touchStartY;
-      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
-        window.history.back();
-      }
-    };
-    window.addEventListener("touchstart", handleTouchStart);
-    window.addEventListener("touchend", handleTouchEnd);
-    return () => {
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [lightbox]);
-
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.03]);
 
   const films = [
@@ -703,13 +680,14 @@ export default function App() {
                     }}
                   />
                   <h2
-                    className="uppercase whitespace-nowrap"
+                    className="uppercase text-center px-4"
                     style={{
                       fontFamily: '"Montserrat", sans-serif',
-                      fontSize: "22px",
+                      fontSize: "clamp(18px, 5vw, 22px)",
                       fontWeight: 300,
-                      letterSpacing: "14px",
+                      letterSpacing: "clamp(6px, 3vw, 14px)",
                       color: "#ffffff",
+                      lineHeight: "1.4",
                     }}
                   >
                     {lightbox.title}
