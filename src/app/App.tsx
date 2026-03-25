@@ -88,6 +88,8 @@ export default function App() {
     index: number;
     title: string;
     category: string;
+    videoUrl?: string;
+    credits?: string[];
   } | null>(null);
   const [showScrollHint, setShowScrollHint] = useState(false);
   const { scrollYProgress } = useScroll();
@@ -176,11 +178,23 @@ export default function App() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setLightbox(null);
+      if (e.key === "Escape") {
+        if (lightbox) window.history.back();
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [lightbox]);
+
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      if (lightbox) {
+        setLightbox(null);
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [lightbox]);
 
   useEffect(() => {
     if (!lightbox) return;
@@ -194,7 +208,7 @@ export default function App() {
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
       if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
-        setLightbox(null);
+        window.history.back();
       }
     };
     window.addEventListener("touchstart", handleTouchStart);
@@ -215,6 +229,13 @@ export default function App() {
       frameCount: 8,
       frames: navinsFrames,
       image: navinsFrames[0],
+      videoUrl: "https://www.youtube.com/embed/xRfQoAuYGHw",
+      credits: [
+        "Director: Vinoth Nathan",
+        "DOP: Vishal",
+        "Associate: Deepak R Ravichandran, Aswin Rajagopal",
+        "Assistant Cinematographer: Mukilan, Lokesh",
+      ],
     },
     {
       id: 3,
@@ -223,6 +244,12 @@ export default function App() {
       frameCount: 10,
       frames: grammyFrames,
       image: grammyFrames[0],
+      videoUrl: "https://www.youtube.com/embed/vXmQokYXrG0",
+      credits: [
+        "Director: Praveen Leonard",
+        "DOP: Vishal",
+        "Assistant Cinematographer: Mukilan, Lokesh",
+      ],
     },
     {
       id: 2,
@@ -243,17 +270,22 @@ export default function App() {
   ];
 
   const openLightbox = (film: (typeof films)[0]) => {
+    window.history.pushState({ lightbox: true }, "");
     setLightbox({
       frames: film.frames,
       index: 0,
       title: film.title,
       category: film.category,
+      videoUrl: (film as any).videoUrl,
+      credits: (film as any).credits,
     });
     setShowScrollHint(true);
     setTimeout(() => setShowScrollHint(false), 2800);
   };
 
-  const closeLightbox = () => setLightbox(null);
+  const closeLightbox = () => {
+    if (lightbox) window.history.back();
+  };
   const lensRadius = 24;
   const lensCircumference = 2 * Math.PI * lensRadius;
   const progressOffset =
@@ -419,10 +451,10 @@ export default function App() {
         {lightbox && (
           <motion.div
             className="fixed inset-0 z-[100] overflow-y-auto select-none"
-            style={{ 
+            style={{
               background: "#080808",
               WebkitUserSelect: "none",
-              WebkitTouchCallout: "none"
+              WebkitTouchCallout: "none",
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -614,36 +646,138 @@ export default function App() {
                 </motion.div>
               ))}
 
-              {/* End card */}
+              {/* Video Section */}
+              {lightbox.videoUrl && (
+                <motion.div
+                  className="w-full mt-12 mb-16"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <div className="relative pt-[56.25%] w-full overflow-hidden bg-[#111] border border-white/5 ring-1 ring-white/5">
+                    <iframe
+                      className="absolute inset-0 w-full h-full"
+                      src={lightbox.videoUrl}
+                      title={`${lightbox.title} Video Player`}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                  <div className="mt-6 flex items-center justify-between">
+                    <p
+                      className="uppercase"
+                      style={{
+                        fontFamily: '"Montserrat", sans-serif',
+                        fontSize: "9px",
+                        letterSpacing: "4px",
+                        color: "#444",
+                      }}
+                    >
+                      Watch full video
+                    </p>
+                    <div className="flex-1 h-px bg-[#222] mx-6" />
+                    <ArrowUpRight size={14} className="text-[#333]" />
+                  </div>
+                </motion.div>
+              )}
+
+              {/* End card / Footer Section */}
               <motion.div
-                className="flex flex-col items-center justify-center py-20"
+                className="flex flex-col items-center justify-center py-12 pb-16 border-t border-white/[0.05] mt-8"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 1.2 }}
               >
-                <div className="w-px h-12 bg-[#222] mb-8" />
-                <p
-                  style={{
-                    fontFamily: "Cormorant Garamond, serif",
-                    fontSize: "28px",
-                    fontWeight: 300,
-                    color: "#333",
-                  }}
-                >
-                  {lightbox.title}
-                </p>
-                <p
-                  className="uppercase mt-3"
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "9px",
-                    letterSpacing: "4px",
-                    color: "#2a2a2a",
-                  }}
-                >
-                  End of frames
-                </p>
+                {/* Visual Header */}
+                <div className="flex flex-col items-center mb-6">
+                  <div
+                    style={{
+                      width: "1px",
+                      height: "40px",
+                      background:
+                        "linear-gradient(to bottom, #ffffff, transparent)",
+                      marginBottom: "20px",
+                    }}
+                  />
+                  <h2
+                    className="uppercase whitespace-nowrap"
+                    style={{
+                      fontFamily: '"Montserrat", sans-serif',
+                      fontSize: "22px",
+                      fontWeight: 300,
+                      letterSpacing: "14px",
+                      color: "#ffffff",
+                    }}
+                  >
+                    {lightbox.title}
+                  </h2>
+                </div>
+
+                {/* Credits Section - Perfectly Aligned List */}
+                {lightbox.credits && (
+                  <div className="flex flex-col gap-4 w-max min-w-[320px] mb-8">
+                    {lightbox.credits.map((line, i) => {
+                      const parts = line.split(":");
+                      return (
+                        <div
+                          key={i}
+                          className="grid grid-cols-2 gap-x-12 w-full whitespace-nowrap"
+                        >
+                          <span
+                            className="uppercase text-right whitespace-nowrap"
+                            style={{
+                              fontFamily: '"Montserrat", sans-serif',
+                              fontSize: "10px",
+                              letterSpacing: "4px",
+                              color: "rgba(255,255,255,0.25)",
+                              fontWeight: 400,
+                            }}
+                          >
+                            {parts[0]}
+                          </span>
+                          <span
+                            className="text-left whitespace-nowrap"
+                            style={{
+                              fontFamily: '"Inter", sans-serif',
+                              fontSize: "13px",
+                              color: "#ffffff",
+                              letterSpacing: "0.05em",
+                              fontWeight: 300,
+                            }}
+                          >
+                            {parts[1] || ""}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Final End Signature */}
+                <div className="flex flex-col items-center gap-6">
+                  <div
+                    style={{
+                      width: "40px",
+                      height: "1px",
+                      backgroundColor: "rgba(255,255,255,0.25)",
+                    }}
+                  />
+                  <p
+                    className="uppercase whitespace-nowrap"
+                    style={{
+                      fontFamily: '"Montserrat", sans-serif',
+                      fontSize: "9px",
+                      letterSpacing: "2px",
+                      color: "rgba(255,255,255,0.45)",
+                      fontWeight: 400,
+                    }}
+                  >
+                    End of frames
+                  </p>
+                </div>
                 <button
                   onClick={closeLightbox}
                   aria-label="Close lightbox at bottom"
@@ -1080,6 +1214,30 @@ export default function App() {
               href="https://instagram.com/iammukil_26"
             />
             <ContactItem
+              icon={
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 12a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H6v4h3Z" />
+                  <path d="M6 16h3a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H6v3Z" />
+                  <path d="M14 12v1a2 2 0 1 0 4 0v-1" />
+                  <path d="M14 12h4" />
+                  <path d="M14 8h4" />
+                  <path d="M2 12a10 10 0 1 0 20 0 10 10 0 0 0-20 0Z" />
+                </svg>
+              }
+              label="Behance"
+              value="mukilanv"
+              href="https://www.behance.net/mukilanv"
+            />
+            <ContactItem
               icon={<Mail strokeWidth={1} size={18} />}
               label="Email"
               value="mukilan2604@gmail.com"
@@ -1188,9 +1346,9 @@ function FilmCard({ film, index, onClick }: FilmCardProps) {
         style={{
           backgroundImage: `url('${film.image}')`,
         }}
-        animate={{ 
+        animate={{
           scale: isHovered ? 1.04 : 1,
-          filter: isHovered ? "brightness(0.35)" : "brightness(1)"
+          filter: isHovered ? "brightness(0.35)" : "brightness(1)",
         }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       />
@@ -1201,7 +1359,7 @@ function FilmCard({ film, index, onClick }: FilmCardProps) {
         animate={{ opacity: isHovered ? 0 : 1, y: isHovered ? -10 : 0 }}
         transition={{ duration: 0.4 }}
       >
-        <div 
+        <div
           style={{
             background: "rgba(0,0,0,0.6)",
             backdropFilter: "blur(8px)",
