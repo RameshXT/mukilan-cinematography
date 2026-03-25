@@ -61,6 +61,24 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
+  const [displayProgress, setDisplayProgress] = useState(0);
+
+  useEffect(() => {
+    let timer: number;
+    if (displayProgress < loadProgress) {
+      timer = window.setInterval(() => {
+        setDisplayProgress((prev) => {
+          if (prev >= loadProgress) {
+            window.clearInterval(timer);
+            return loadProgress;
+          }
+          return prev + 1;
+        });
+      }, 14);
+    }
+    return () => window.clearInterval(timer);
+  }, [loadProgress, displayProgress]);
+
   const [lightbox, setLightbox] = useState<{
     frames: string[];
     index: number;
@@ -235,7 +253,7 @@ export default function App() {
   const lensRadius = 24;
   const lensCircumference = 2 * Math.PI * lensRadius;
   const progressOffset =
-    lensCircumference - (loadProgress / 100) * lensCircumference;
+    lensCircumference - (displayProgress / 100) * lensCircumference;
 
   return (
     <div className="bg-[#0a0a0a] text-white overflow-x-hidden">
@@ -384,7 +402,7 @@ export default function App() {
                     ease: "easeInOut",
                   }}
                 >
-                  Loading {loadProgress}%
+                  Loading {displayProgress}%
                 </motion.p>
               </div>
             </motion.div>
