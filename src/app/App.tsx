@@ -59,7 +59,10 @@ const grammyFrames = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10];
 
 const navinsFrames = [n1, n2, n3, n4, n5, n6, n7, n8];
 
-const HERO_BG_URL = "https://wolfcrow.com/wp-content/uploads/2019/02/kutch.jpg";
+import heroAsset from "../assets/hero.jpg";
+
+const FALLBACK_HERO_URL = "https://wolfcrow.com/wp-content/uploads/2019/02/kutch.jpg";
+const HERO_BG_URL = heroAsset || FALLBACK_HERO_URL;
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
@@ -700,27 +703,27 @@ export default function App() {
                     {lightbox.credits.map((line, i) => {
                       const parts = line.split(":");
                       return (
-                        <div 
-                          key={i} 
+                        <div
+                          key={i}
                           className="flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-x-12 w-full max-w-[500px]"
                         >
-                          <span 
+                          <span
                             className="uppercase text-center md:text-right"
-                            style={{ 
-                              fontFamily: '"Montserrat", sans-serif', 
-                              fontSize: "9px", 
-                              letterSpacing: "3px", 
+                            style={{
+                              fontFamily: '"Montserrat", sans-serif',
+                              fontSize: "9px",
+                              letterSpacing: "3px",
                               color: "rgba(255,255,255,0.2)",
                               fontWeight: 400
                             }}
                           >
                             {parts[0]}
                           </span>
-                          <span 
+                          <span
                             className="text-center md:text-left"
-                            style={{ 
-                              fontFamily: '"Inter", sans-serif', 
-                              fontSize: "12px", 
+                            style={{
+                              fontFamily: '"Inter", sans-serif',
+                              fontSize: "12px",
                               color: "#ffffff",
                               letterSpacing: "0.04em",
                               fontWeight: 300
@@ -777,26 +780,57 @@ export default function App() {
 
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden">
-        <motion.div
-          className="absolute inset-0"
-          style={{ scale: heroScale }}
-          initial={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
-          animate={
-            !isLoading ? { opacity: 1, scale: 1, filter: "blur(0px)" } : {}
-          }
-          transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+        <motion.div 
+          className="absolute inset-0 z-0 bg-[#0a0a0a]"
+          initial={{ opacity: 0 }}
+          animate={!isLoading ? { opacity: 1 } : {}}
+          transition={{ duration: 1.2 }}
         >
-          <div
+          {/* Main Background with Flash Effect */}
+          <motion.div
             className="absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage: `url('${HERO_BG_URL}')`,
+              scale: heroScale,
+            }}
+            initial={{ 
+              opacity: 0,
+              filter: "brightness(2.5) contrast(0.8) blur(10px)",
+            }}
+            animate={!isLoading ? { 
+              opacity: 1,
+              filter: "brightness(1) contrast(1.05) blur(0px)",
+            } : {}}
+            transition={{ 
+              duration: 2.5, 
+              delay: 0.8, 
+              ease: [0.16, 1, 0.3, 1] 
             }}
           />
+          
+          {/* Light Flash Flare Overlay */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none z-10"
+            style={{
+              background: "radial-gradient(circle at 60% 40%, white 0%, transparent 70%)",
+            }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={!isLoading ? { 
+              opacity: [0, 0.7, 0],
+              scale: [0.9, 1.5, 1.2],
+            } : {}}
+            transition={{ 
+              duration: 1.8, 
+              delay: 0.7, 
+              ease: "easeOut"
+            }}
+          />
+
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.45) 40%, rgba(10,10,10,0.15) 100%)",
+                "linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.6) 30%, rgba(10,10,10,0.2) 100%)",
             }}
           />
         </motion.div>
