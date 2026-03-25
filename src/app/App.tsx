@@ -716,36 +716,36 @@ export default function App() {
                   </h2>
                 </div>
 
-                {/* Credits Section - Perfectly Aligned List */}
+                {/* Credits Section - Responsive Editorial Layout */}
                 {lightbox.credits && (
-                  <div className="flex flex-col gap-4 w-max min-w-[320px] mb-8">
+                  <div className="flex flex-col gap-6 md:gap-4 w-full px-6 mb-8 items-center">
                     {lightbox.credits.map((line, i) => {
                       const parts = line.split(":");
                       return (
-                        <div
-                          key={i}
-                          className="grid grid-cols-2 gap-x-12 w-full whitespace-nowrap"
+                        <div 
+                          key={i} 
+                          className="flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-x-12 w-full max-w-[500px]"
                         >
-                          <span
-                            className="uppercase text-right whitespace-nowrap"
-                            style={{
-                              fontFamily: '"Montserrat", sans-serif',
-                              fontSize: "10px",
-                              letterSpacing: "4px",
-                              color: "rgba(255,255,255,0.25)",
-                              fontWeight: 400,
+                          <span 
+                            className="uppercase text-center md:text-right"
+                            style={{ 
+                              fontFamily: '"Montserrat", sans-serif', 
+                              fontSize: "9px", 
+                              letterSpacing: "3px", 
+                              color: "rgba(255,255,255,0.2)",
+                              fontWeight: 400
                             }}
                           >
                             {parts[0]}
                           </span>
-                          <span
-                            className="text-left whitespace-nowrap"
-                            style={{
-                              fontFamily: '"Inter", sans-serif',
-                              fontSize: "13px",
+                          <span 
+                            className="text-center md:text-left"
+                            style={{ 
+                              fontFamily: '"Inter", sans-serif', 
+                              fontSize: "12px", 
                               color: "#ffffff",
-                              letterSpacing: "0.05em",
-                              fontWeight: 300,
+                              letterSpacing: "0.04em",
+                              fontWeight: 300
                             }}
                           >
                             {parts[1] || ""}
@@ -781,7 +781,7 @@ export default function App() {
                 <button
                   onClick={closeLightbox}
                   aria-label="Close lightbox at bottom"
-                  className="mt-10 uppercase flex items-center gap-3 opacity-40 hover:opacity-100 transition-opacity"
+                  className="mt-4 uppercase flex items-center gap-3 opacity-40 hover:opacity-100 transition-opacity"
                   style={{
                     fontFamily: "Inter, sans-serif",
                     fontSize: "9px",
