@@ -418,8 +418,12 @@ export default function App() {
       <AnimatePresence>
         {lightbox && (
           <motion.div
-            className="fixed inset-0 z-[100] overflow-y-auto"
-            style={{ background: "#080808" }}
+            className="fixed inset-0 z-[100] overflow-y-auto select-none"
+            style={{ 
+              background: "#080808",
+              WebkitUserSelect: "none",
+              WebkitTouchCallout: "none"
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -1173,7 +1177,8 @@ function FilmCard({ film, index, onClick }: FilmCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="relative aspect-video overflow-hidden cursor-pointer group"
+      className="relative aspect-video overflow-hidden cursor-pointer group select-none"
+      style={{ WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -1200,16 +1205,17 @@ function FilmCard({ film, index, onClick }: FilmCardProps) {
           style={{
             background: "rgba(0,0,0,0.6)",
             backdropFilter: "blur(8px)",
-            padding: "8px 20px",
+            padding: "6px 16px",
             border: "1px solid rgba(255,255,255,0.1)",
+            whiteSpace: "nowrap",
           }}
         >
           <h3
             className="text-right uppercase"
             style={{
               fontFamily: '"Montserrat", sans-serif',
-              fontSize: "13px",
-              letterSpacing: "3px",
+              fontSize: "clamp(10px, 3vw, 13px)",
+              letterSpacing: "2.5px",
               color: "#ffffff",
               fontWeight: 400,
             }}
