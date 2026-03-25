@@ -1,6 +1,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  color-scheme: light dark;
   --font-size: 16px;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
@@ -128,6 +129,15 @@
     @apply bg-background text-foreground;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  img {
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
   /**

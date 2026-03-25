@@ -59,6 +59,7 @@ const grammyFrames = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10];
 
 const navinsFrames = [n1, n2, n3, n4, n5, n6, n7, n8];
 
+import logoAsset from "../assets/logo.png";
 import heroAsset from "../assets/hero.jpg";
 
 const FALLBACK_HERO_URL = "https://wolfcrow.com/wp-content/uploads/2019/02/kutch.jpg";
@@ -289,23 +290,7 @@ export default function App() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="relative flex items-center justify-center">
-                <motion.div
-                  className="absolute h-40 w-40 rounded-full"
-                  style={{
-                    background:
-                      "radial-gradient(circle, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 70%)",
-                    filter: "blur(12px)",
-                  }}
-                  animate={{
-                    scale: [0.95, 1.08, 0.95],
-                    opacity: [0.35, 0.65, 0.35],
-                  }}
-                  transition={{
-                    duration: 2.2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
+
 
                 <svg
                   width="176"
@@ -665,21 +650,20 @@ export default function App() {
 
               {/* End card / Footer Section */}
               <motion.div
-                className="flex flex-col items-center justify-center py-12 pb-16 border-t border-white/[0.05] mt-8"
+                className="flex flex-col items-center justify-center py-2 pb-10 mt-0"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1.2 }}
               >
                 {/* Visual Header */}
-                <div className="flex flex-col items-center mb-6">
+                <div className="flex flex-col items-center mb-2">
                   <div
                     style={{
                       width: "1px",
                       height: "40px",
-                      background:
-                        "linear-gradient(to bottom, #ffffff, transparent)",
-                      marginBottom: "20px",
+                      backgroundColor: "rgba(255,255,255,0.25)",
+                      marginBottom: "12px",
                     }}
                   />
                   <h2
@@ -697,18 +681,18 @@ export default function App() {
                   </h2>
                 </div>
 
-                {/* Credits Section - Responsive Editorial Layout */}
+                {/* Credits Section - Aligned Grid for Tabs/Laptops */}
                 {lightbox.credits && (
-                  <div className="flex flex-col gap-6 md:gap-4 w-full px-6 mb-8 items-center">
+                  <div className="flex flex-col gap-1.5 w-full px-6 mb-4 items-center">
                     {lightbox.credits.map((line, i) => {
                       const parts = line.split(":");
                       return (
-                        <div
-                          key={i}
-                          className="flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-x-12 w-full max-w-[500px]"
+                        <div 
+                          key={i} 
+                          className="flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-x-4 w-full max-w-2xl"
                         >
                           <span
-                            className="uppercase text-center md:text-right"
+                            className="uppercase text-center md:text-right md:whitespace-nowrap"
                             style={{
                               fontFamily: '"Montserrat", sans-serif',
                               fontSize: "9px",
@@ -720,7 +704,7 @@ export default function App() {
                             {parts[0]}
                           </span>
                           <span
-                            className="text-center md:text-left"
+                            className="text-center md:text-left md:whitespace-nowrap"
                             style={{
                               fontFamily: '"Inter", sans-serif',
                               fontSize: "12px",
@@ -738,13 +722,18 @@ export default function App() {
                 )}
 
                 {/* Final End Signature */}
-                <div className="flex flex-col items-center gap-6">
+                <div className="flex flex-col items-center gap-6 mt-4">
                   <div
                     style={{
                       width: "40px",
                       height: "1px",
                       backgroundColor: "rgba(255,255,255,0.25)",
                     }}
+                  />
+                  <img
+                    src={logoAsset}
+                    alt="Mukilan Logo"
+                    className="h-14 w-auto object-contain"
                   />
                   <p
                     className="uppercase whitespace-nowrap"
@@ -780,7 +769,7 @@ export default function App() {
 
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden">
-        <motion.div 
+        <motion.div
           className="absolute inset-0 z-0 bg-[#0a0a0a]"
           initial={{ opacity: 0 }}
           animate={!isLoading ? { opacity: 1 } : {}}
@@ -793,38 +782,27 @@ export default function App() {
               backgroundImage: `url('${HERO_BG_URL}')`,
               scale: heroScale,
             }}
-            initial={{ 
+            initial={{
               opacity: 0,
-              filter: "brightness(2.5) contrast(0.8) blur(10px)",
+              filter: "brightness(0.2)",
+              WebkitMaskImage: "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
+              maskImage: "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
             }}
-            animate={!isLoading ? { 
+            animate={!isLoading ? {
               opacity: 1,
-              filter: "brightness(1) contrast(1.05) blur(0px)",
+              filter: "brightness(1)",
+              WebkitMaskImage: "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
+              maskImage: "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
             } : {}}
-            transition={{ 
-              duration: 2.5, 
-              delay: 0.8, 
-              ease: [0.16, 1, 0.3, 1] 
+            transition={{
+              WebkitMaskImage: { duration: 3, delay: 0.4, ease: [0.16, 1, 0.3, 1] },
+              maskImage: { duration: 3, delay: 0.4, ease: [0.16, 1, 0.3, 1] },
+              opacity: { duration: 2, delay: 0.5 },
+              filter: { duration: 3, delay: 0.5 },
             }}
           />
-          
-          {/* Light Flash Flare Overlay */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none z-10"
-            style={{
-              background: "radial-gradient(circle at 60% 40%, white 0%, transparent 70%)",
-            }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={!isLoading ? { 
-              opacity: [0, 0.7, 0],
-              scale: [0.9, 1.5, 1.2],
-            } : {}}
-            transition={{ 
-              duration: 1.8, 
-              delay: 0.7, 
-              ease: "easeOut"
-            }}
-          />
+
+
 
           <div
             className="absolute inset-0"
@@ -832,6 +810,20 @@ export default function App() {
               background:
                 "linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.6) 30%, rgba(10,10,10,0.2) 100%)",
             }}
+          />
+        </motion.div>
+
+        {/* Logo - Top Left */}
+        <motion.div
+          className="absolute top-6 left-6 lg:left-[60px] z-[20]"
+          initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+          animate={!isLoading ? { opacity: 1, scale: 1, filter: "blur(0px)" } : {}}
+          transition={{ duration: 1, delay: 1 }}
+        >
+          <img
+            src={logoAsset}
+            alt="Mukilan Logo"
+            className="h-16 lg:h-20 w-auto object-contain"
           />
         </motion.div>
 
@@ -848,7 +840,7 @@ export default function App() {
               fontFamily: "Inter, sans-serif",
               fontSize: "10px",
               letterSpacing: "4px",
-              color: "#555555",
+              color: "rgba(255,255,255,0.6)",
             }}
           >
             DOP — Film
@@ -1106,7 +1098,7 @@ export default function App() {
               An aspiring cinematographer with a deep passion for visual
               storytelling. Guided by a love for light, composition, and the
               emotional impact of moving images, I aim to craft visuals that are
-              not only beautiful but also meaningful — serving the story and
+              not only beautiful but also meaningful serving the story and
               resonating with the audience on a deeper level.
             </p>
 
@@ -1220,7 +1212,7 @@ export default function App() {
 
           <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
             <ContactItem
-              icon={<Instagram strokeWidth={1} size={18} />}
+              icon={<Instagram strokeWidth={1} size={22} />}
               label="Instagram"
               value="@iammukil_26"
               href="https://instagram.com/iammukil_26"
@@ -1228,8 +1220,8 @@ export default function App() {
             <ContactItem
               icon={
                 <svg
-                  width="18"
-                  height="18"
+                  width="22"
+                  height="22"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -1250,13 +1242,13 @@ export default function App() {
               href="https://www.behance.net/mukilanv"
             />
             <ContactItem
-              icon={<Mail strokeWidth={1} size={18} />}
+              icon={<Mail strokeWidth={1} size={22} />}
               label="Email"
               value="mukilan2604@gmail.com"
               href="mailto:mukilan2604@gmail.com"
             />
             <ContactItem
-              icon={<Phone strokeWidth={1} size={18} />}
+              icon={<Phone strokeWidth={1} size={22} />}
               label="Phone"
               value="+91 95009 95740"
               href="tel:+919500995740"
