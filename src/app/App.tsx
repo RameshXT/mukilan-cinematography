@@ -1196,7 +1196,7 @@ function FilmCard({ film, index, onClick }: FilmCardProps) {
       />
 
       <motion.div
-        className="absolute top-0 right-0 p-8 pt-10 pointer-events-none"
+        className="absolute top-0 right-0 p-0 lg:p-8 pointer-events-none"
         initial={{ opacity: 1, y: 0 }}
         animate={{ opacity: isHovered ? 0 : 1, y: isHovered ? -10 : 0 }}
         transition={{ duration: 0.4 }}
@@ -1206,7 +1206,8 @@ function FilmCard({ film, index, onClick }: FilmCardProps) {
             background: "rgba(0,0,0,0.6)",
             backdropFilter: "blur(8px)",
             padding: "6px 16px",
-            border: "1px solid rgba(255,255,255,0.1)",
+            borderLeft: "1px solid rgba(255,255,255,0.1)",
+            borderBottom: "1px solid rgba(255,255,255,0.1)",
             whiteSpace: "nowrap",
           }}
         >
