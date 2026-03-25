@@ -3,57 +3,61 @@ import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { Instagram, Mail, Phone, X, ArrowUpRight } from "lucide-react";
 
-const marumunaiFrames = [
-  "/src/asserts/films/Marumunai/m-1.jpg",
-  "/src/asserts/films/Marumunai/m-2.jpg",
-  "/src/asserts/films/Marumunai/m-3.jpg",
-  "/src/asserts/films/Marumunai/m-4.jpg",
-  "/src/asserts/films/Marumunai/m-5.jpg",
-  "/src/asserts/films/Marumunai/m-6.jpg",
-  "/src/asserts/films/Marumunai/m-7.jpg",
-  "/src/asserts/films/Marumunai/m-8.jpg",
-  "/src/asserts/films/Marumunai/m-9.jpg",
-  "/src/asserts/films/Marumunai/m-10.jpg",
-];
+// Marumunai frames
+import m1 from "../assets/films/Marumunai/m-1.jpg";
+import m2 from "../assets/films/Marumunai/m-2.jpg";
+import m3 from "../assets/films/Marumunai/m-3.jpg";
+import m4 from "../assets/films/Marumunai/m-4.jpg";
+import m5 from "../assets/films/Marumunai/m-5.jpg";
+import m6 from "../assets/films/Marumunai/m-6.jpg";
+import m7 from "../assets/films/Marumunai/m-7.jpg";
+import m8 from "../assets/films/Marumunai/m-8.jpg";
+import m9 from "../assets/films/Marumunai/m-9.jpg";
+import m10 from "../assets/films/Marumunai/m-10.jpg";
 
-const thodarFrames = [
-  "/src/asserts/films/thodar/t-1.jpg",
-  "/src/asserts/films/thodar/t-2.jpg",
-  "/src/asserts/films/thodar/t-3.jpg",
-  "/src/asserts/films/thodar/t-4.jpg",
-  "/src/asserts/films/thodar/t-5.jpg",
-  "/src/asserts/films/thodar/t-6.jpg",
-  "/src/asserts/films/thodar/t-7.jpg",
-  "/src/asserts/films/thodar/t-8.jpg",
-  "/src/asserts/films/thodar/t-9.jpg",
-  "/src/asserts/films/thodar/t-10.jpg",
-  "/src/asserts/films/thodar/t-11.jpg",
-  "/src/asserts/films/thodar/t-12.jpg",
-];
+// Thodar frames
+import t1 from "../assets/films/thodar/t-1.jpg";
+import t2 from "../assets/films/thodar/t-2.jpg";
+import t3 from "../assets/films/thodar/t-3.jpg";
+import t4 from "../assets/films/thodar/t-4.jpg";
+import t5 from "../assets/films/thodar/t-5.jpg";
+import t6 from "../assets/films/thodar/t-6.jpg";
+import t7 from "../assets/films/thodar/t-7.jpg";
+import t8 from "../assets/films/thodar/t-8.jpg";
+import t9 from "../assets/films/thodar/t-9.jpg";
+import t10 from "../assets/films/thodar/t-10.jpg";
+import t11 from "../assets/films/thodar/t-11.jpg";
+import t12 from "../assets/films/thodar/t-12.jpg";
 
-const grammyFrames = [
-  "/src/asserts/films/grammy/G-1.png",
-  "/src/asserts/films/grammy/G-2.png",
-  "/src/asserts/films/grammy/G-3.png",
-  "/src/asserts/films/grammy/G-4.png",
-  "/src/asserts/films/grammy/G-5.png",
-  "/src/asserts/films/grammy/G-6.png",
-  "/src/asserts/films/grammy/G-7.png",
-  "/src/asserts/films/grammy/G-8.png",
-  "/src/asserts/films/grammy/G-9.png",
-  "/src/asserts/films/grammy/G-10.png",
-];
+// Grammy frames
+import g1 from "../assets/films/grammy/G-1.png";
+import g2 from "../assets/films/grammy/G-2.png";
+import g3 from "../assets/films/grammy/G-3.png";
+import g4 from "../assets/films/grammy/G-4.png";
+import g5 from "../assets/films/grammy/G-5.png";
+import g6 from "../assets/films/grammy/G-6.png";
+import g7 from "../assets/films/grammy/G-7.png";
+import g8 from "../assets/films/grammy/G-8.png";
+import g9 from "../assets/films/grammy/G-9.png";
+import g10 from "../assets/films/grammy/G-10.png";
 
-const navinsFrames = [
-  "/src/asserts/films/navins/N-1.png",
-  "/src/asserts/films/navins/N-2.png",
-  "/src/asserts/films/navins/N-3.png",
-  "/src/asserts/films/navins/N-4.png",
-  "/src/asserts/films/navins/N-5.png",
-  "/src/asserts/films/navins/N-6.png",
-  "/src/asserts/films/navins/N-7.png",
-  "/src/asserts/films/navins/N-8.png",
-];
+// Navins frames
+import n1 from "../assets/films/navins/N-1.png";
+import n2 from "../assets/films/navins/N-2.png";
+import n3 from "../assets/films/navins/N-3.png";
+import n4 from "../assets/films/navins/N-4.png";
+import n5 from "../assets/films/navins/N-5.png";
+import n6 from "../assets/films/navins/N-6.png";
+import n7 from "../assets/films/navins/N-7.png";
+import n8 from "../assets/films/navins/N-8.png";
+
+const marumunaiFrames = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10];
+
+const thodarFrames = [t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12];
+
+const grammyFrames = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10];
+
+const navinsFrames = [n1, n2, n3, n4, n5, n6, n7, n8];
 
 const HERO_BG_URL = "https://wolfcrow.com/wp-content/uploads/2019/02/kutch.jpg";
 
@@ -1178,31 +1182,41 @@ function FilmCard({ film, index, onClick }: FilmCardProps) {
         className="w-full h-full bg-cover bg-center"
         style={{
           backgroundImage: `url('${film.image}')`,
-          filter: isHovered ? "brightness(0.35)" : "brightness(0.55)",
         }}
-        animate={{ scale: isHovered ? 1.04 : 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        animate={{ 
+          scale: isHovered ? 1.04 : 1,
+          filter: isHovered ? "brightness(0.35)" : "brightness(1)"
+        }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       />
 
-      {/* Static Title: Top Right, normal text, fades out on hover */}
       <motion.div
-        className="absolute top-0 right-0 p-8 pointer-events-none"
+        className="absolute top-0 right-0 p-8 pt-10 pointer-events-none"
         initial={{ opacity: 1, y: 0 }}
         animate={{ opacity: isHovered ? 0 : 1, y: isHovered ? -10 : 0 }}
         transition={{ duration: 0.4 }}
       >
-        <h3
-          className="text-right uppercase"
+        <div 
           style={{
-            fontFamily: '"Montserrat", sans-serif',
-            fontSize: "14px",
-            letterSpacing: "3px",
-            color: "#ffffff",
-            fontWeight: 400,
+            background: "rgba(0,0,0,0.6)",
+            backdropFilter: "blur(8px)",
+            padding: "8px 20px",
+            border: "1px solid rgba(255,255,255,0.1)",
           }}
         >
-          {film.title}
-        </h3>
+          <h3
+            className="text-right uppercase"
+            style={{
+              fontFamily: '"Montserrat", sans-serif',
+              fontSize: "13px",
+              letterSpacing: "3px",
+              color: "#ffffff",
+              fontWeight: 400,
+            }}
+          >
+            {film.title}
+          </h3>
+        </div>
       </motion.div>
 
       {/* Hover Info: Original bottom left design, fades in on hover */}
