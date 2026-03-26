@@ -1,9 +1,7 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { Instagram, Mail, Phone, X, ArrowUpRight } from "lucide-react";
 
-// Marumunai frames
 import m1 from "../assets/films/Marumunai/m-1.jpg";
 import m2 from "../assets/films/Marumunai/m-2.jpg";
 import m3 from "../assets/films/Marumunai/m-3.jpg";
@@ -15,7 +13,6 @@ import m8 from "../assets/films/Marumunai/m-8.jpg";
 import m9 from "../assets/films/Marumunai/m-9.jpg";
 import m10 from "../assets/films/Marumunai/m-10.jpg";
 
-// Thodar frames
 import t1 from "../assets/films/thodar/t-1.jpg";
 import t2 from "../assets/films/thodar/t-2.jpg";
 import t3 from "../assets/films/thodar/t-3.jpg";
@@ -29,7 +26,6 @@ import t10 from "../assets/films/thodar/t-10.jpg";
 import t11 from "../assets/films/thodar/t-11.jpg";
 import t12 from "../assets/films/thodar/t-12.jpg";
 
-// Grammy frames
 import g1 from "../assets/films/grammy/G-1.png";
 import g2 from "../assets/films/grammy/G-2.png";
 import g3 from "../assets/films/grammy/G-3.png";
@@ -41,7 +37,6 @@ import g8 from "../assets/films/grammy/G-8.png";
 import g9 from "../assets/films/grammy/G-9.png";
 import g10 from "../assets/films/grammy/G-10.png";
 
-// Navins frames
 import n1 from "../assets/films/navins/N-1.png";
 import n2 from "../assets/films/navins/N-2.png";
 import n3 from "../assets/films/navins/N-3.png";
@@ -51,25 +46,114 @@ import n6 from "../assets/films/navins/N-6.png";
 import n7 from "../assets/films/navins/N-7.png";
 import n8 from "../assets/films/navins/N-8.png";
 
-const marumunaiFrames = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10];
-
-const thodarFrames = [t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12];
-
-const grammyFrames = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10];
-
-const navinsFrames = [n1, n2, n3, n4, n5, n6, n7, n8];
-
 import logoAsset from "../assets/logo.png";
 import heroAsset from "../assets/hero.jpg";
 
-const FALLBACK_HERO_URL = "https://wolfcrow.com/wp-content/uploads/2019/02/kutch.jpg";
-const HERO_BG_URL = heroAsset || FALLBACK_HERO_URL;
+const marumunaiFrames = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10];
+const thodarFrames = [t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12];
+const grammyFrames = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10];
+const navinsFrames = [n1, n2, n3, n4, n5, n6, n7, n8];
+
+const FALLBACK_HERO_URL =
+  "https://wolfcrow.com/wp-content/uploads/2019/02/kutch.jpg";
+const HERO_BG_URL: string = heroAsset || FALLBACK_HERO_URL;
+
+const LENS_RADIUS = 24;
+const LENS_CIRCUMFERENCE = 2 * Math.PI * LENS_RADIUS;
+
+const SKILL_TAGS = [
+  "Cinematography",
+  "Lighting",
+  "Color Grading",
+  "Composition",
+  "Visual Narrative",
+] as const;
+
+const ASSETS_TO_PRELOAD = [
+  navinsFrames[0],
+  marumunaiFrames[0],
+  thodarFrames[0],
+  grammyFrames[0],
+  HERO_BG_URL,
+] as const;
+
+interface Film {
+  id: number;
+  title: string;
+  category: string;
+  frameCount: number;
+  frames: string[];
+  image: string;
+  videoUrl?: string;
+  credits?: string[];
+}
+
+interface LightboxState {
+  frames: string[];
+  index: number;
+  title: string;
+  category: string;
+  videoUrl?: string;
+  credits?: string[];
+}
+
+const FILMS: Film[] = [
+  {
+    id: 4,
+    title: "Navin's Ad",
+    category: "Ads",
+    frameCount: 8,
+    frames: navinsFrames,
+    image: navinsFrames[0],
+    videoUrl: "https://www.youtube.com/embed/xRfQoAuYGHw",
+    credits: [
+      "Director: Vinoth Nathan",
+      "DOP: Vishal",
+      "Associate: Deepak R Ravichandran, Aswin Rajagopal",
+      "Assistant Cinematographer: Mukilan, Lokesh",
+    ],
+  },
+  {
+    id: 3,
+    title: "Grammy Savor Puttu Ad",
+    category: "Ads",
+    frameCount: 10,
+    frames: grammyFrames,
+    image: grammyFrames[0],
+    videoUrl: "https://www.youtube.com/embed/vXmQokYXrG0",
+    credits: [
+      "Director: Praveen Leonard",
+      "DOP: Vishal",
+      "Assistant Cinematographer: Mukilan, Lokesh",
+    ],
+  },
+  {
+    id: 2,
+    title: "Thodar",
+    category: "Short Film",
+    frameCount: 12,
+    frames: thodarFrames,
+    image: thodarFrames[0],
+  },
+  {
+    id: 1,
+    title: "Marumunai",
+    category: "Short Film",
+    frameCount: 10,
+    frames: marumunaiFrames,
+    image: marumunaiFrames[0],
+  },
+];
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
   const [displayProgress, setDisplayProgress] = useState(0);
+  const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+  const [showScrollHint, setShowScrollHint] = useState(false);
+
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     let timer: number;
@@ -87,39 +171,17 @@ export default function App() {
     return () => window.clearInterval(timer);
   }, [loadProgress, displayProgress]);
 
-  const [lightbox, setLightbox] = useState<{
-    frames: string[];
-    index: number;
-    title: string;
-    category: string;
-    videoUrl?: string;
-    credits?: string[];
-  } | null>(null);
-  const [showScrollHint, setShowScrollHint] = useState(false);
-  const { scrollYProgress } = useScroll();
-
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
     const loaderStart = Date.now();
     const minVisibleMs = 1400;
     const maxWaitMs = 9000;
-    const assetsToPreload = [
-      navinsFrames[0],
-      marumunaiFrames[0],
-      thodarFrames[0],
-      grammyFrames[0],
-      HERO_BG_URL,
-    ];
-    const totalAssets = assetsToPreload.length;
+    const totalAssets = ASSETS_TO_PRELOAD.length;
     let loadedAssets = 0;
     let completed = false;
     let isMounted = true;
@@ -131,7 +193,6 @@ export default function App() {
       setLoadProgress(100);
       const elapsed = Date.now() - loaderStart;
       const remaining = Math.max(minVisibleMs - elapsed, 0);
-
       finishTimeoutId = window.setTimeout(() => {
         if (!isMounted) return;
         setIsLoading(false);
@@ -146,7 +207,7 @@ export default function App() {
       if (loadedAssets >= totalAssets) finishLoader();
     };
 
-    assetsToPreload.forEach((src) => {
+    ASSETS_TO_PRELOAD.forEach((src) => {
       const image = new Image();
       let settled = false;
       const resolve = () => {
@@ -170,11 +231,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (lightbox) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = lightbox ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
@@ -182,19 +239,15 @@ export default function App() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        if (lightbox) window.history.back();
-      }
+      if (e.key === "Escape" && lightbox) window.history.back();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [lightbox]);
 
   useEffect(() => {
-    const handlePopState = (e: PopStateEvent) => {
-      if (lightbox) {
-        setLightbox(null);
-      }
+    const handlePopState = () => {
+      if (lightbox) setLightbox(null);
     };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
@@ -202,75 +255,26 @@ export default function App() {
 
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.03]);
 
-  const films = [
-    {
-      id: 4,
-      title: "Navin's Ad",
-      category: "Ads",
-      frameCount: 8,
-      frames: navinsFrames,
-      image: navinsFrames[0],
-      videoUrl: "https://www.youtube.com/embed/xRfQoAuYGHw",
-      credits: [
-        "Director: Vinoth Nathan",
-        "DOP: Vishal",
-        "Associate: Deepak R Ravichandran, Aswin Rajagopal",
-        "Assistant Cinematographer: Mukilan, Lokesh",
-      ],
-    },
-    {
-      id: 3,
-      title: "Grammy Savor Puttu Ad",
-      category: "Ads",
-      frameCount: 10,
-      frames: grammyFrames,
-      image: grammyFrames[0],
-      videoUrl: "https://www.youtube.com/embed/vXmQokYXrG0",
-      credits: [
-        "Director: Praveen Leonard",
-        "DOP: Vishal",
-        "Assistant Cinematographer: Mukilan, Lokesh",
-      ],
-    },
-    {
-      id: 2,
-      title: "Thodar",
-      category: "Short Film",
-      frameCount: 12,
-      frames: thodarFrames,
-      image: thodarFrames[0],
-    },
-    {
-      id: 1,
-      title: "Marumunai",
-      category: "Short Film",
-      frameCount: 10,
-      frames: marumunaiFrames,
-      image: marumunaiFrames[0],
-    },
-  ];
-
-  const openLightbox = (film: (typeof films)[0]) => {
+  const openLightbox = useCallback((film: Film) => {
     window.history.pushState({ lightbox: true }, "");
     setLightbox({
       frames: film.frames,
       index: 0,
       title: film.title,
       category: film.category,
-      videoUrl: (film as any).videoUrl,
-      credits: (film as any).credits,
+      videoUrl: film.videoUrl,
+      credits: film.credits,
     });
     setShowScrollHint(true);
     setTimeout(() => setShowScrollHint(false), 2800);
-  };
+  }, []);
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     if (lightbox) window.history.back();
-  };
-  const lensRadius = 24;
-  const lensCircumference = 2 * Math.PI * lensRadius;
+  }, [lightbox]);
+
   const progressOffset =
-    lensCircumference - (displayProgress / 100) * lensCircumference;
+    LENS_CIRCUMFERENCE - (displayProgress / 100) * LENS_CIRCUMFERENCE;
 
   return (
     <div className="bg-[#0a0a0a] text-white overflow-x-hidden">
@@ -290,8 +294,6 @@ export default function App() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="relative flex items-center justify-center">
-
-
                 <svg
                   width="176"
                   height="130"
@@ -351,7 +353,7 @@ export default function App() {
                   <motion.circle
                     cx="88"
                     cy="69"
-                    r={lensRadius}
+                    r={LENS_RADIUS}
                     stroke="white"
                     strokeWidth="2"
                     strokeDasharray="8 9"
@@ -366,10 +368,10 @@ export default function App() {
                   <circle
                     cx="88"
                     cy="69"
-                    r={lensRadius}
+                    r={LENS_RADIUS}
                     stroke="rgba(255,255,255,0.28)"
                     strokeWidth="3"
-                    strokeDasharray={lensCircumference}
+                    strokeDasharray={LENS_CIRCUMFERENCE}
                     strokeDashoffset={progressOffset}
                     transform="rotate(-90 88 69)"
                   />
@@ -411,7 +413,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Scroll Frame Viewer */}
       <AnimatePresence>
         {lightbox && (
           <motion.div
@@ -426,7 +427,6 @@ export default function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            {/* Sticky Header */}
             <div
               className="sticky top-0 z-10 flex items-center justify-between px-6 lg:px-12 py-5"
               style={{
@@ -435,7 +435,6 @@ export default function App() {
                 borderBottom: "1px solid rgba(255,255,255,0.05)",
               }}
             >
-              {/* Left — title */}
               <div className="flex items-center gap-5">
                 <div className="w-px h-4 bg-[#222]" />
                 <div>
@@ -464,7 +463,6 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Right — frame count + close */}
               <div className="flex items-center gap-6">
                 <p
                   className="uppercase hidden lg:block"
@@ -487,7 +485,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Scroll hint — minimal bottom toast */}
             <AnimatePresence>
               {showScrollHint && (
                 <motion.div
@@ -497,7 +494,6 @@ export default function App() {
                   exit={{ y: "100%" }}
                   transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  {/* Scanning progress line */}
                   <motion.div
                     style={{
                       height: 1,
@@ -523,7 +519,7 @@ export default function App() {
                       }}
                     />
                   </motion.div>
-                  {/* Text row */}
+
                   <div
                     className="flex items-center justify-between px-6 lg:px-12 py-4"
                     style={{
@@ -566,7 +562,6 @@ export default function App() {
               )}
             </AnimatePresence>
 
-            {/* All frames stacked vertically */}
             <div className="px-6 lg:px-24 py-16 flex flex-col gap-3 lg:gap-4">
               {lightbox.frames.map((frame, i) => (
                 <motion.div
@@ -587,7 +582,7 @@ export default function App() {
                       objectFit: "cover",
                     }}
                   />
-                  {/* Frame number overlay */}
+
                   <div
                     className="absolute bottom-0 left-0 px-4 py-3"
                     style={{
@@ -611,7 +606,6 @@ export default function App() {
                 </motion.div>
               ))}
 
-              {/* Video Section */}
               {lightbox.videoUrl && (
                 <motion.div
                   className="w-full mt-12 mb-16"
@@ -648,7 +642,6 @@ export default function App() {
                 </motion.div>
               )}
 
-              {/* End card / Footer Section */}
               <motion.div
                 className="flex flex-col items-center justify-center py-2 pb-10 mt-0"
                 initial={{ opacity: 0 }}
@@ -656,7 +649,6 @@ export default function App() {
                 viewport={{ once: true }}
                 transition={{ duration: 1.2 }}
               >
-                {/* Visual Header */}
                 <div className="flex flex-col items-center mb-2">
                   <div
                     style={{
@@ -681,14 +673,13 @@ export default function App() {
                   </h2>
                 </div>
 
-                {/* Credits Section - Aligned Grid for Tabs/Laptops */}
                 {lightbox.credits && (
                   <div className="flex flex-col gap-1.5 w-full px-6 mb-4 items-center">
                     {lightbox.credits.map((line, i) => {
                       const parts = line.split(":");
                       return (
-                        <div 
-                          key={i} 
+                        <div
+                          key={i}
                           className="flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-x-4 w-full max-w-2xl"
                         >
                           <span
@@ -698,7 +689,7 @@ export default function App() {
                               fontSize: "9px",
                               letterSpacing: "3px",
                               color: "rgba(255,255,255,0.2)",
-                              fontWeight: 400
+                              fontWeight: 400,
                             }}
                           >
                             {parts[0]}
@@ -710,7 +701,7 @@ export default function App() {
                               fontSize: "12px",
                               color: "#ffffff",
                               letterSpacing: "0.04em",
-                              fontWeight: 300
+                              fontWeight: 300,
                             }}
                           >
                             {parts[1] || ""}
@@ -721,7 +712,6 @@ export default function App() {
                   </div>
                 )}
 
-                {/* Final End Signature */}
                 <div className="flex flex-col items-center gap-6 mt-4">
                   <div
                     style={{
@@ -767,7 +757,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden">
         <motion.div
           className="absolute inset-0 z-0 bg-[#0a0a0a]"
@@ -775,7 +764,6 @@ export default function App() {
           animate={!isLoading ? { opacity: 1 } : {}}
           transition={{ duration: 1.2 }}
         >
-          {/* Main Background with Flash Effect */}
           <motion.div
             className="absolute inset-0 bg-cover bg-center"
             style={{
@@ -785,24 +773,34 @@ export default function App() {
             initial={{
               opacity: 0,
               filter: "brightness(0.2)",
-              WebkitMaskImage: "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
-              maskImage: "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
+              WebkitMaskImage:
+                "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
+              maskImage:
+                "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
             }}
-            animate={!isLoading ? {
-              opacity: 1,
-              filter: "brightness(1)",
-              WebkitMaskImage: "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
-              maskImage: "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
-            } : {}}
+            animate={
+              !isLoading
+                ? {
+                  opacity: 1,
+                  filter: "brightness(1)",
+                  WebkitMaskImage:
+                    "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
+                  maskImage:
+                    "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
+                }
+                : {}
+            }
             transition={{
-              WebkitMaskImage: { duration: 3, delay: 0.4, ease: [0.16, 1, 0.3, 1] },
+              WebkitMaskImage: {
+                duration: 3,
+                delay: 0.4,
+                ease: [0.16, 1, 0.3, 1],
+              },
               maskImage: { duration: 3, delay: 0.4, ease: [0.16, 1, 0.3, 1] },
               opacity: { duration: 2, delay: 0.5 },
               filter: { duration: 3, delay: 0.5 },
             }}
           />
-
-
 
           <div
             className="absolute inset-0"
@@ -813,12 +811,17 @@ export default function App() {
           />
         </motion.div>
 
-        {/* Logo - Top Left */}
         <motion.div
           className="absolute top-6 left-6 lg:left-[60px] z-[20]"
-          initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-          animate={!isLoading ? { opacity: 1, scale: 1, filter: "blur(0px)" } : {}}
-          transition={{ duration: 1, delay: 1 }}
+          initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: -30 }}
+          animate={
+            !isLoading ? { opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0 } : {}
+          }
+          transition={{
+            duration: 1.8,
+            delay: 1.8,
+            ease: [0.16, 1, 0.3, 1],
+          }}
         >
           <img
             src={logoAsset}
@@ -827,12 +830,13 @@ export default function App() {
           />
         </motion.div>
 
-        {/* Top right label */}
         <motion.div
           className="absolute top-10 right-6 lg:right-[60px] z-10"
-          initial={{ opacity: 0, x: 20 }}
-          animate={!isLoading ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.8, delay: 1.2 }}
+          initial={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: 20 }}
+          animate={
+            !isLoading ? { opacity: 1, clipPath: "inset(0 0 0 0%)", x: 0 } : {}
+          }
+          transition={{ duration: 1.5, delay: 2.0, ease: [0.16, 1, 0.3, 1] }}
         >
           <p
             className="uppercase"
@@ -847,9 +851,7 @@ export default function App() {
           </p>
         </motion.div>
 
-        {/* Main hero content — bottom anchored big text */}
         <div className="relative h-full flex flex-col justify-end px-6 lg:px-[60px] pb-16 lg:pb-20">
-          {/* Eyebrow */}
           <motion.p
             initial={{ opacity: 0, y: 30, letterSpacing: "8px" }}
             animate={
@@ -861,13 +863,12 @@ export default function App() {
               fontFamily: '"Montserrat", sans-serif',
               fontSize: "11px",
               fontWeight: 400,
-              color: "#888888",
+              color: "#989797ff",
             }}
           >
             Cinematographer
           </motion.p>
 
-          {/* Giant name with solid/outline modern aesthetic */}
           <div className="relative overflow-hidden mb-[-5px] lg:mb-[-15px]">
             <motion.h1
               initial={{ y: "100%", opacity: 0 }}
@@ -876,10 +877,10 @@ export default function App() {
               style={{
                 fontFamily: '"Montserrat", sans-serif',
                 fontSize: "clamp(44px, 7vw, 110px)",
-                fontWeight: 400,
-                lineHeight: 1,
+                fontWeight: 500,
+                lineHeight: 1.1,
                 color: "#ffffff",
-                letterSpacing: "-0.02em",
+                letterSpacing: "-0.01em",
               }}
             >
               Mukilan
@@ -898,17 +899,16 @@ export default function App() {
               style={{
                 fontFamily: '"Montserrat", sans-serif',
                 fontSize: "clamp(44px, 7vw, 110px)",
-                fontWeight: 400,
-                lineHeight: 1,
+                fontWeight: 500,
+                lineHeight: 1.2,
                 color: "#ffffff",
-                letterSpacing: "-0.02em",
+                letterSpacing: "-0.01em",
               }}
             >
               Vaithiyanathan
             </motion.h1>
           </div>
 
-          {/* Bottom row */}
           <motion.div
             className="flex items-end justify-between mt-8 lg:mt-10"
             initial={{ opacity: 0, y: 10 }}
@@ -919,13 +919,13 @@ export default function App() {
               style={{
                 fontFamily: '"Montserrat", sans-serif',
                 fontSize: "12px",
-                color: "#666666",
+                color: "#989797ff",
                 maxWidth: "260px",
                 lineHeight: 1.7,
               }}
             >
-              Visual Storyteller &<br />
-              Director of Photography
+              Director of Photography &<br />
+              Visual Storyteller
             </p>
 
             <div className="hidden lg:flex items-center gap-4">
@@ -947,9 +947,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Work Section */}
       <section className="px-6 lg:px-[120px] py-16 lg:py-24 relative overflow-hidden">
-        {/* Large faint background text */}
         <div
           className="absolute right-0 top-1/2 pointer-events-none select-none hidden lg:block"
           style={{
@@ -967,7 +965,6 @@ export default function App() {
           Work
         </div>
 
-        {/* Section label */}
         <motion.div
           className="flex items-center gap-6 mb-12 lg:mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -990,7 +987,7 @@ export default function App() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0.5">
-          {films.map((film, index) => (
+          {FILMS.map((film, index) => (
             <FilmCard
               key={film.id}
               film={film}
@@ -1001,9 +998,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="px-6 lg:px-[120px] pb-28 pt-16 lg:pb-40 lg:pt-24 relative overflow-hidden bg-[#0a0a0a]">
-        {/* Section label */}
+      <section className="px-6 lg:px-[120px] pb-20 pt-16 lg:pb-40 lg:pt-24 relative overflow-hidden bg-[#0a0a0a]">
         <motion.div
           className="flex items-center gap-6 mb-16 lg:mb-24"
           initial={{ opacity: 0, y: 20 }}
@@ -1025,9 +1020,7 @@ export default function App() {
           </p>
         </motion.div>
 
-        {/* Two-column grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 max-w-[1400px] mx-auto items-center">
-          {/* Left — Image */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1059,7 +1052,6 @@ export default function App() {
             <div className="absolute inset-[12px] border border-white/[0.06] group-hover:border-white/15 transition-colors duration-1000 pointer-events-none" />
           </motion.div>
 
-          {/* Right — Content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1067,7 +1059,6 @@ export default function App() {
             transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col"
           >
-            {/* Headline */}
             <h2
               style={{
                 fontFamily: '"Cormorant Garamond", serif',
@@ -1084,7 +1075,6 @@ export default function App() {
               Stories
             </h2>
 
-            {/* Body text */}
             <p
               style={{
                 fontFamily: '"Montserrat", sans-serif',
@@ -1118,7 +1108,6 @@ export default function App() {
               energy to impactful and meaningful projects.
             </p>
 
-            {/* Divider + Quote */}
             <div className="w-16 h-px bg-[#262626] mb-6" />
             <p
               className="uppercase mb-12"
@@ -1133,15 +1122,8 @@ export default function App() {
               <span style={{ color: "#fff", fontWeight: 500 }}>words</span> do.
             </p>
 
-            {/* Skill tags */}
             <div className="flex flex-wrap gap-3" style={{ maxWidth: "480px" }}>
-              {[
-                "Cinematography",
-                "Lighting",
-                "Color Grading",
-                "Composition",
-                "Visual Narrative",
-              ].map((tag) => (
+              {SKILL_TAGS.map((tag) => (
                 <span
                   key={tag}
                   className="uppercase"
@@ -1171,8 +1153,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="px-6 lg:px-[120px] py-16 lg:py-20 flex flex-col items-center justify-center text-center">
+      <section className="px-6 lg:px-[120px] pt-4 pb-16 lg:pt-6 lg:pb-24 flex flex-col items-center justify-center text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1180,8 +1161,13 @@ export default function App() {
           transition={{ duration: 0.8 }}
           className="flex flex-col items-center max-w-2xl"
         >
-          {/* Subtle line */}
-          <div className="w-px h-16 bg-[#333] mb-8" />
+          <div className="w-px h-16 bg-[#333] mb-12" />
+
+          <img
+            src={logoAsset}
+            alt="Mukilan Logo"
+            className="h-16 w-auto object-contain mb-0 grayscale hover:grayscale-0 transition-all duration-700"
+          />
 
           <h2
             className="mb-6"
@@ -1210,7 +1196,7 @@ export default function App() {
             storytelling.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap items-center justify-center gap-x-8 lg:gap-x-12 gap-y-10 lg:gap-y-12 w-full max-w-3xl">
             <ContactItem
               icon={<Instagram strokeWidth={1} size={22} />}
               label="Instagram"
@@ -1257,9 +1243,7 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* Footer / Copyright Section */}
       <footer className="px-6 lg:px-[120px] py-16 pb-20 relative overflow-hidden text-center">
-        {/* Large faint background text */}
         <div
           className="absolute right-0 top-1/2 pointer-events-none select-none hidden lg:block"
           style={{
@@ -1285,18 +1269,24 @@ export default function App() {
           className="relative z-10"
         >
           <p
+            className="flex flex-col items-center gap-2 lg:block"
             style={{
               fontFamily: '"Montserrat", sans-serif',
-              fontSize: "11px",
-              letterSpacing: "1px",
+              fontSize: "10px",
+              letterSpacing: "1.2px",
               color: "#555555",
+              lineHeight: 2,
             }}
           >
-            © 2025
-            {new Date().getFullYear() > 2025
-              ? ` - ${new Date().getFullYear()}`
-              : ""}{" "}
-            &nbsp;·&nbsp; Mukilan &nbsp;·&nbsp; Designed and developed by{" "}
+            <span>
+              © 2025
+              {new Date().getFullYear() > 2025
+                ? ` - ${new Date().getFullYear()}`
+                : ""}{" "}
+              · Mukilan
+            </span>
+            <span className="hidden lg:inline mx-2">·</span>
+            <span className="opacity-80">Designed and developed by </span>
             <a
               href="https://rameshxt.pages.dev/"
               target="_blank"
@@ -1318,19 +1308,16 @@ export default function App() {
 }
 
 interface FilmCardProps {
-  film: {
-    id: number;
-    title: string;
-    category: string;
-    frameCount: number;
-    frames: string[];
-    image: string;
-  };
+  film: Film;
   index: number;
   onClick: () => void;
 }
 
-function FilmCard({ film, index, onClick }: FilmCardProps) {
+const FilmCard = memo(function FilmCard({
+  film,
+  index,
+  onClick,
+}: FilmCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -1388,7 +1375,6 @@ function FilmCard({ film, index, onClick }: FilmCardProps) {
         </div>
       </motion.div>
 
-      {/* Hover Info: Original bottom left design, fades in on hover */}
       <motion.div
         className="absolute bottom-0 left-0 p-8 lg:p-12 pointer-events-none"
         initial={{ opacity: 0, y: 20 }}
@@ -1430,7 +1416,7 @@ function FilmCard({ film, index, onClick }: FilmCardProps) {
       </motion.div>
     </motion.div>
   );
-}
+});
 
 interface ContactItemProps {
   icon?: React.ReactNode;
@@ -1439,7 +1425,12 @@ interface ContactItemProps {
   href: string;
 }
 
-function ContactItem({ icon, label, value, href }: ContactItemProps) {
+const ContactItem = memo(function ContactItem({
+  icon,
+  label,
+  value,
+  href,
+}: ContactItemProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -1473,7 +1464,7 @@ function ContactItem({ icon, label, value, href }: ContactItemProps) {
         className="relative"
         style={{
           fontFamily: '"Montserrat", sans-serif',
-          fontSize: "14px",
+          fontSize: "clamp(12px, 3.5vw, 14px)",
           fontWeight: 300,
           color: "#ccc",
           transition: "color 0.3s ease",
@@ -1490,4 +1481,4 @@ function ContactItem({ icon, label, value, href }: ContactItemProps) {
       </span>
     </a>
   );
-}
+});
