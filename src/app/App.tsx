@@ -998,158 +998,198 @@ export default function App() {
         </div>
       </section>
 
-      <section className="px-6 lg:px-[120px] pb-20 pt-16 lg:pb-40 lg:pt-24 relative overflow-hidden bg-[#0a0a0a]">
+      <section className="px-6 lg:px-[120px] pb-32 pt-24 relative overflow-hidden bg-[#0a0a0a]">
+        {/* Background Decorative Text */}
         <motion.div
-          className="flex items-center gap-6 mb-16 lg:mb-24"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          className="absolute left-0 top-[20%] pointer-events-none select-none opacity-[0.03] whitespace-nowrap"
+          style={{
+            fontFamily: '"Montserrat", sans-serif',
+            fontSize: "400px",
+            fontWeight: 900,
+            color: "#fff",
+            lineHeight: 1,
+            x: useTransform(useScroll().scrollYProgress, [0.6, 0.9], [100, -300]),
+          }}
         >
-          <div className="w-8 h-px bg-[#333]" />
+          VISIONARY
+        </motion.div>
+
+        <motion.div
+          className="flex items-center gap-6 mb-24 relative z-10"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="w-12 h-px bg-[#333]" />
           <p
             className="uppercase"
             style={{
               fontFamily: '"Montserrat", sans-serif',
-              fontSize: "10px",
-              letterSpacing: "5px",
-              color: "#444",
+              fontSize: "11px",
+              letterSpacing: "8px",
+              color: "#666",
             }}
           >
-            About
+            Storyteller
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 max-w-[1400px] mx-auto items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full aspect-[4/5] max-w-[520px] mx-auto lg:mx-0 overflow-hidden group cursor-pointer"
-            style={{ willChange: "transform" }}
-          >
-            <img
-              src="https://images.unsplash.com/photo-1727528605123-142157a2c30c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMGZpbG1tYWtlciUyMHBob3RvZ3JhcGhlciUyMHByb2Zlc3Npb25hbHxlbnwxfHx8fDE3NzIyMDM3NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
-              alt="Mukilan"
-              className="w-full h-full object-cover"
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-16 lg:gap-24 max-w-[1400px] mx-auto relative z-10">
+          {/* Creative Image Stack */}
+          <div className="relative w-full lg:w-1/2 min-h-[500px] lg:min-h-[700px] flex items-center justify-center">
+            {/* Main Image */}
+            <motion.div
               style={{
-                filter: "grayscale(100%) brightness(0.7) contrast(1)",
-                transition:
-                  "filter 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+                y: useTransform(useScroll().scrollYProgress, [0.6, 0.9], [0, -80]),
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.filter =
-                  "grayscale(100%) brightness(0.95) contrast(1.25)";
-                e.currentTarget.style.transform = "scale(1.04)";
+              className="relative w-[85%] aspect-[3/4] overflow-hidden"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1727528605123-142157a2c30c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMGZpbG1tYWtlciUyMHBob3RvZ3JhcGhlciUyMHByb2Zlc3Npb25hbHxlbnwxfHx8fDE3NzIyMDM3NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                alt="Mukilan Portrait"
+                className="w-full h-full object-cover grayscale brightness-75 hover:brightness-100 transition-all duration-1000"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/40 to-transparent" />
+            </motion.div>
+
+            {/* Overlapping Frame */}
+            <motion.div
+              style={{
+                y: useTransform(useScroll().scrollYProgress, [0.6, 0.9], [0, 40]),
               }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.filter =
-                  "grayscale(100%) brightness(0.7) contrast(1)";
-                e.currentTarget.style.transform = "scale(1)";
-              }}
+              className="absolute top-1/2 left-0 w-full h-1/2 border border-white/10 pointer-events-none -translate-y-1/2 translate-x-12 z-0"
             />
-            <div className="absolute inset-[12px] border border-white/[0.06] group-hover:border-white/15 transition-colors duration-1000 pointer-events-none" />
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col"
-          >
-            <h2
+            {/* Secondary Technical Detail Shot */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
               style={{
-                fontFamily: '"Cormorant Garamond", serif',
-                fontSize: "clamp(32px, 4vw, 56px)",
-                fontWeight: 300,
-                color: "#ffffff",
-                lineHeight: 1.15,
-                letterSpacing: "-0.01em",
-                marginBottom: "40px",
+                y: useTransform(useScroll().scrollYProgress, [0.6, 0.9], [0, 120]),
+              }}
+              className="absolute -bottom-10 -right-4 w-1/2 aspect-square hidden lg:block overflow-hidden border-[12px] border-[#0a0a0a]"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1000&auto=format&fit=crop"
+                alt="Cinematography Gear"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+              />
+            </motion.div>
+
+            {/* Camera Coordinates Label */}
+            <div
+              className="absolute top-0 left-0 -translate-x-4 translate-y-4 vertical-text hidden lg:block"
+              style={{
+                fontFamily: '"JetBrains Mono", monospace',
+                fontSize: "9px",
+                color: "rgba(255,255,255,0.2)",
+                letterSpacing: "2px",
+                writingMode: "vertical-rl",
               }}
             >
-              Crafting Visual
-              <br />
-              Stories
-            </h2>
+              13.0827° N, 80.2707° E — CHENNAI, IN
+            </div>
+          </div>
 
-            <p
-              style={{
-                fontFamily: '"Montserrat", sans-serif',
-                fontSize: "14px",
-                lineHeight: 2,
-                color: "#aaa",
-                marginBottom: "24px",
-                maxWidth: "480px",
-              }}
+          {/* Content side */}
+          <div className="w-full lg:w-1/2 flex flex-col pt-0 lg:pt-12">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             >
-              An aspiring cinematographer with a deep passion for visual
-              storytelling. Guided by a love for light, composition, and the
-              emotional impact of moving images, I aim to craft visuals that are
-              not only beautiful but also meaningful serving the story and
-              resonating with the audience on a deeper level.
-            </p>
+              <h2
+                style={{
+                  fontFamily: '"Cormorant Garamond", serif',
+                  fontSize: "clamp(48px, 6vw, 92px)",
+                  fontWeight: 300,
+                  color: "#ffffff",
+                  lineHeight: 0.9,
+                  letterSpacing: "-0.03em",
+                  marginBottom: "60px",
+                }}
+              >
+                Beyond the <br />
+                <span style={{ fontStyle: "italic", marginLeft: "40px" }}>
+                  Surface.
+                </span>
+              </h2>
 
-            <p
-              style={{
-                fontFamily: '"Montserrat", sans-serif',
-                fontSize: "14px",
-                lineHeight: 2,
-                color: "#888",
-                marginBottom: "40px",
-                maxWidth: "480px",
-              }}
-            >
-              Each project is a chance to grow, explore new perspectives, and
-              push creative boundaries. I believe in the collaborative spirit of
-              filmmaking and am always eager to bring my vision, dedication, and
-              energy to impactful and meaningful projects.
-            </p>
+              <div className="flex gap-12 flex-col lg:flex-row items-start">
+                <div className="flex flex-col gap-8">
+                  <p
+                    style={{
+                      fontFamily: '"Montserrat", sans-serif',
+                      fontSize: "15px",
+                      lineHeight: 1.8,
+                      color: "#ccc",
+                      maxWidth: "460px",
+                      fontWeight: 300,
+                    }}
+                  >
+                    Guided by light and driven by emotion, I craft visuals that serve the soul of the story. I believe cinematography is more than just capturing images—it's about creating a language of shadows and silhouettes that resonates long after the credits roll.
+                  </p>
 
-            <div className="w-16 h-px bg-[#262626] mb-6" />
-            <p
-              className="uppercase mb-12"
-              style={{
-                fontFamily: '"Montserrat", sans-serif',
-                fontSize: "10px",
-                letterSpacing: "4px",
-                color: "#555",
-              }}
-            >
-              Speak before{" "}
-              <span style={{ color: "#fff", fontWeight: 500 }}>words</span> do.
-            </p>
+                  <p
+                    style={{
+                      fontFamily: '"Montserrat", sans-serif',
+                      fontSize: "14px",
+                      lineHeight: 1.8,
+                      color: "#777",
+                      maxWidth: "440px",
+                      fontWeight: 300,
+                    }}
+                  >
+                    Every frame is an opportunity to challenge perception. In a world of fleeting content, I aim for permanence—visuals that demand attention and command gravity.
+                  </p>
+                </div>
+              </div>
 
-            <div className="flex flex-wrap gap-3" style={{ maxWidth: "480px" }}>
-              {SKILL_TAGS.map((tag) => (
-                <span
-                  key={tag}
-                  className="uppercase"
+              <div className="mt-20">
+                <p
+                  className="uppercase mb-8"
                   style={{
                     fontFamily: '"Montserrat", sans-serif',
-                    fontSize: "9px",
-                    letterSpacing: "2px",
-                    color: "#777",
-                    border: "1px solid #252525",
-                    padding: "8px 16px",
-                    transition: "all 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "#555";
-                    e.currentTarget.style.color = "#ccc";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "#252525";
-                    e.currentTarget.style.color = "#777";
+                    fontSize: "10px",
+                    letterSpacing: "4px",
+                    color: "#444",
                   }}
                 >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </motion.div>
+                  Technical Mastery
+                </p>
+                <div className="flex flex-wrap gap-x-12 gap-y-6">
+                  {SKILL_TAGS.map((tag, idx) => (
+                    <div key={tag} className="flex flex-col gap-2 group">
+                      <span
+                        style={{
+                          fontFamily: '"JetBrains Mono", monospace',
+                          fontSize: "9px",
+                          color: "rgba(255, 255, 255, 0.6)",
+                        }}
+                      >
+                        0{idx + 1}:
+                      </span>
+                      <span
+                        className="uppercase"
+                        style={{
+                          fontFamily: '"Montserrat", sans-serif',
+                          fontSize: "11px",
+                          letterSpacing: "2px",
+                          color: "#999",
+                          transition: "color 0.3s ease",
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
