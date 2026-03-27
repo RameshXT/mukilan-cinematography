@@ -6,7 +6,7 @@ import m1 from "../assets/films/Marumunai/m-1.jpg";
 import m2 from "../assets/films/Marumunai/m-2.jpg";
 import m3 from "../assets/films/Marumunai/m-3.jpg";
 import m4 from "../assets/films/Marumunai/m-4.jpg";
-import m5 from "../assets/films/Marumunai/m-5.jpg";
+import m5 from "../assets/films/Marumunai/m-5.jpg"; 
 import m6 from "../assets/films/Marumunai/m-6.jpg";
 import m7 from "../assets/films/Marumunai/m-7.jpg";
 import m8 from "../assets/films/Marumunai/m-8.jpg";
@@ -48,6 +48,7 @@ import n8 from "../assets/films/navins/N-8.png";
 
 import logoAsset from "../assets/logo.png";
 import heroAsset from "../assets/hero.jpg";
+import aboutcvr from "../assets/aboutcvr.jpg"
 
 const marumunaiFrames = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10];
 const thodarFrames = [t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12];
@@ -777,7 +778,7 @@ export default function App() {
                 "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
               maskImage:
                 "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
-            }}
+            } as any}
             animate={
               !isLoading
                 ? {
@@ -787,7 +788,7 @@ export default function App() {
                     "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
                   maskImage:
                     "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
-                }
+                } as any
                 : {}
             }
             transition={{
@@ -799,7 +800,7 @@ export default function App() {
               maskImage: { duration: 3, delay: 0.4, ease: [0.16, 1, 0.3, 1] },
               opacity: { duration: 2, delay: 0.5 },
               filter: { duration: 3, delay: 0.5 },
-            }}
+            } as any}
           />
 
           <div
@@ -901,7 +902,7 @@ export default function App() {
                 fontSize: "clamp(44px, 7vw, 110px)",
                 fontWeight: 500,
                 lineHeight: 1.2,
-                color: "#ffffff",
+                color: "#949494ff",
                 letterSpacing: "-0.01em",
               }}
             >
@@ -1031,7 +1032,7 @@ export default function App() {
               color: "#666",
             }}
           >
-            Storyteller
+            Who I Am
           </p>
         </motion.div>
 
@@ -1072,7 +1073,7 @@ export default function App() {
               className="absolute -bottom-10 -right-4 w-1/2 aspect-square hidden lg:block overflow-hidden border-[12px] border-[#0a0a0a]"
             >
               <img
-                src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1000&auto=format&fit=crop"
+                src={aboutcvr}
                 alt="Cinematography Gear"
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
               />
@@ -1103,8 +1104,8 @@ export default function App() {
             >
               <h2
                 style={{
-                  fontFamily: '"Cormorant Garamond", serif',
-                  fontSize: "clamp(48px, 6vw, 92px)",
+                  fontFamily: '"Montserrat", sans-serif',
+                  fontSize: "clamp(40px, 5vw, 78px)",
                   fontWeight: 300,
                   color: "#ffffff",
                   lineHeight: 0.9,
@@ -1113,7 +1114,7 @@ export default function App() {
                 }}
               >
                 Beyond the <br />
-                <span style={{ fontStyle: "italic", marginLeft: "40px" }}>
+                <span style={{ marginLeft: "0px" }}>
                   Surface.
                 </span>
               </h2>
@@ -1130,7 +1131,7 @@ export default function App() {
                       fontWeight: 300,
                     }}
                   >
-                    Guided by light and driven by emotion, I craft visuals that serve the soul of the story. I believe cinematography is more than just capturing images—it's about creating a language of shadows and silhouettes that resonates long after the credits roll.
+                    Guided by light and driven by emotion, I craft visuals that serve the soul of the story. I believe cinematography is more than just capturing images it's about creating a language of shadows and silhouettes that resonates long after the credits roll.
                   </p>
 
                   <p
@@ -1143,7 +1144,7 @@ export default function App() {
                       fontWeight: 300,
                     }}
                   >
-                    Every frame is an opportunity to challenge perception. In a world of fleeting content, I aim for permanence—visuals that demand attention and command gravity.
+                    Every frame is an opportunity to challenge perception. In a world of fleeting content, I aim for permanence visuals that demand attention and command gravity.
                   </p>
                 </div>
               </div>
@@ -1298,7 +1299,6 @@ export default function App() {
             letterSpacing: "-0.04em",
           }}
         >
-          Mukilan
         </div>
 
         <motion.div
