@@ -6,7 +6,7 @@ import m1 from "../assets/films/Marumunai/m-1.jpg";
 import m2 from "../assets/films/Marumunai/m-2.jpg";
 import m3 from "../assets/films/Marumunai/m-3.jpg";
 import m4 from "../assets/films/Marumunai/m-4.jpg";
-import m5 from "../assets/films/Marumunai/m-5.jpg";
+import m5 from "../assets/films/Marumunai/m-5.jpg"; 
 import m6 from "../assets/films/Marumunai/m-6.jpg";
 import m7 from "../assets/films/Marumunai/m-7.jpg";
 import m8 from "../assets/films/Marumunai/m-8.jpg";
@@ -778,7 +778,7 @@ export default function App() {
                 "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
               maskImage:
                 "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
-            }}
+            } as any}
             animate={
               !isLoading
                 ? {
@@ -788,7 +788,7 @@ export default function App() {
                     "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
                   maskImage:
                     "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
-                }
+                } as any
                 : {}
             }
             transition={{
@@ -800,7 +800,7 @@ export default function App() {
               maskImage: { duration: 3, delay: 0.4, ease: [0.16, 1, 0.3, 1] },
               opacity: { duration: 2, delay: 0.5 },
               filter: { duration: 3, delay: 0.5 },
-            }}
+            } as any}
           />
 
           <div
@@ -902,7 +902,7 @@ export default function App() {
                 fontSize: "clamp(44px, 7vw, 110px)",
                 fontWeight: 500,
                 lineHeight: 1.2,
-                color: "#ffffff",
+                color: "#949494ff",
                 letterSpacing: "-0.01em",
               }}
             >
