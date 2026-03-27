@@ -1035,7 +1035,7 @@ export default function App() {
               color: "#666",
             }}
           >
-            Who I Am
+            Who Am I
           </p>
         </motion.div>
 
