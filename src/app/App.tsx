@@ -63,11 +63,11 @@ const LENS_RADIUS = 24;
 const LENS_CIRCUMFERENCE = 2 * Math.PI * LENS_RADIUS;
 
 const SKILL_TAGS = [
-  "Cinematography",
-  "Lighting",
-  "Color Grading",
-  "Composition",
-  "Visual Narrative",
+  // "Cinematography",
+  // "Lighting",
+  // "Color Grading",
+  // "Composition",
+  // "Visual Narrative",
 ] as const;
 
 const ASSETS_TO_PRELOAD = [
@@ -848,7 +848,7 @@ export default function App() {
               color: "rgba(255,255,255,0.6)",
             }}
           >
-            DOP — Film
+            {/* DOP — Film */}
           </p>
         </motion.div>
 
@@ -925,8 +925,8 @@ export default function App() {
                 lineHeight: 1.7,
               }}
             >
-              Director of Photography &<br />
-              Visual Storyteller
+              {/* Director of Photography &<br />
+              Visual Storyteller */}
             </p>
 
             <div className="hidden lg:flex items-center gap-4">
@@ -1159,7 +1159,7 @@ export default function App() {
                     color: "#444",
                   }}
                 >
-                  Technical Mastery
+                  {/* Technical Mastery */}
                 </p>
                 <div className="flex flex-wrap gap-x-12 gap-y-6">
                   {SKILL_TAGS.map((tag, idx) => (
@@ -1233,8 +1233,8 @@ export default function App() {
               maxWidth: "400px",
             }}
           >
-            Open for commissions, collaborations, and conversations about visual
-            storytelling.
+            {/* Open for commissions, collaborations, and conversations about visual
+            storytelling. */}
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap items-center justify-center gap-x-8 lg:gap-x-12 gap-y-10 lg:gap-y-12 w-full max-w-3xl">
