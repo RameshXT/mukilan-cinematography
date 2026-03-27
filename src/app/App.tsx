@@ -6,7 +6,7 @@ import m1 from "../assets/films/Marumunai/m-1.jpg";
 import m2 from "../assets/films/Marumunai/m-2.jpg";
 import m3 from "../assets/films/Marumunai/m-3.jpg";
 import m4 from "../assets/films/Marumunai/m-4.jpg";
-import m5 from "../assets/films/Marumunai/m-5.jpg"; 
+import m5 from "../assets/films/Marumunai/m-5.jpg";
 import m6 from "../assets/films/Marumunai/m-6.jpg";
 import m7 from "../assets/films/Marumunai/m-7.jpg";
 import m8 from "../assets/films/Marumunai/m-8.jpg";
@@ -48,10 +48,11 @@ import n8 from "../assets/films/navins/N-8.png";
 
 import logoAsset from "../assets/logo.png";
 import heroAsset from "../assets/hero.jpg";
-import aboutcvr from "../assets/aboutcvr.jpg"
+import aboutcvr from "../assets/aboutcvr.jpg";
+import about from "../assets/about.jpeg";
 
 const marumunaiFrames = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10];
-const thodarFrames = [t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12];
+const thodarFrames = [t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12];
 const grammyFrames = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10];
 const navinsFrames = [n1, n2, n3, n4, n5, n6, n7, n8];
 
@@ -70,13 +71,7 @@ const SKILL_TAGS = [
   // "Visual Narrative",
 ] as const;
 
-const ASSETS_TO_PRELOAD = [
-  navinsFrames[0],
-  marumunaiFrames[0],
-  thodarFrames[0],
-  grammyFrames[0],
-  HERO_BG_URL,
-] as const;
+const ASSETS_TO_PRELOAD = [n5, m8, t8, g5, HERO_BG_URL] as const;
 
 interface Film {
   id: number;
@@ -101,11 +96,11 @@ interface LightboxState {
 const FILMS: Film[] = [
   {
     id: 4,
-    title: "Navin's Ad",
+    title: "Navin's Ad (AC)",
     category: "Ads",
     frameCount: 8,
     frames: navinsFrames,
-    image: navinsFrames[0],
+    image: n5,
     videoUrl: "https://www.youtube.com/embed/xRfQoAuYGHw",
     credits: [
       "Director: Vinoth Nathan",
@@ -116,11 +111,11 @@ const FILMS: Film[] = [
   },
   {
     id: 3,
-    title: "Grammy Savor Puttu Ad",
+    title: "Grammy Savor Puttu Ad (AC)",
     category: "Ads",
     frameCount: 10,
     frames: grammyFrames,
-    image: grammyFrames[0],
+    image: g5,
     videoUrl: "https://www.youtube.com/embed/vXmQokYXrG0",
     credits: [
       "Director: Praveen Leonard",
@@ -134,7 +129,7 @@ const FILMS: Film[] = [
     category: "Short Film",
     frameCount: 12,
     frames: thodarFrames,
-    image: thodarFrames[0],
+    image: t8,
   },
   {
     id: 1,
@@ -142,7 +137,7 @@ const FILMS: Film[] = [
     category: "Short Film",
     frameCount: 10,
     frames: marumunaiFrames,
-    image: marumunaiFrames[0],
+    image: m8,
   },
 ];
 
@@ -771,36 +766,40 @@ export default function App() {
               backgroundImage: `url('${HERO_BG_URL}')`,
               scale: heroScale,
             }}
-            initial={{
-              opacity: 0,
-              filter: "brightness(0.2)",
-              WebkitMaskImage:
-                "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
-              maskImage:
-                "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
-            } as any}
+            initial={
+              {
+                opacity: 0,
+                filter: "brightness(0.2)",
+                WebkitMaskImage:
+                  "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
+                maskImage:
+                  "radial-gradient(circle at 60% 40%, black 0%, transparent 10%)",
+              } as any
+            }
             animate={
               !isLoading
-                ? {
-                  opacity: 1,
-                  filter: "brightness(1)",
-                  WebkitMaskImage:
-                    "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
-                  maskImage:
-                    "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
-                } as any
+                ? ({
+                    opacity: 1,
+                    filter: "brightness(1)",
+                    WebkitMaskImage:
+                      "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
+                    maskImage:
+                      "radial-gradient(circle at 60% 40%, black 100%, transparent 100%)",
+                  } as any)
                 : {}
             }
-            transition={{
-              WebkitMaskImage: {
-                duration: 3,
-                delay: 0.4,
-                ease: [0.16, 1, 0.3, 1],
-              },
-              maskImage: { duration: 3, delay: 0.4, ease: [0.16, 1, 0.3, 1] },
-              opacity: { duration: 2, delay: 0.5 },
-              filter: { duration: 3, delay: 0.5 },
-            } as any}
+            transition={
+              {
+                WebkitMaskImage: {
+                  duration: 3,
+                  delay: 0.4,
+                  ease: [0.16, 1, 0.3, 1],
+                },
+                maskImage: { duration: 3, delay: 0.4, ease: [0.16, 1, 0.3, 1] },
+                opacity: { duration: 2, delay: 0.5 },
+                filter: { duration: 3, delay: 0.5 },
+              } as any
+            }
           />
 
           <div
@@ -1009,7 +1008,11 @@ export default function App() {
             fontWeight: 900,
             color: "#fff",
             lineHeight: 1,
-            x: useTransform(useScroll().scrollYProgress, [0.6, 0.9], [100, -300]),
+            x: useTransform(
+              useScroll().scrollYProgress,
+              [0.6, 0.9],
+              [100, -300]
+            ),
           }}
         >
           VISIONARY
@@ -1042,12 +1045,16 @@ export default function App() {
             {/* Main Image */}
             <motion.div
               style={{
-                y: useTransform(useScroll().scrollYProgress, [0.6, 0.9], [0, -80]),
+                y: useTransform(
+                  useScroll().scrollYProgress,
+                  [0.6, 0.9],
+                  [0, -80]
+                ),
               }}
               className="relative w-[85%] aspect-[3/4] overflow-hidden"
             >
               <img
-                src="https://images.unsplash.com/photo-1727528605123-142157a2c30c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMGZpbG1tYWtlciUyMHBob3RvZ3JhcGhlciUyMHByb2Zlc3Npb25hbHxlbnwxfHx8fDE3NzIyMDM3NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                src={about}
                 alt="Mukilan Portrait"
                 className="w-full h-full object-cover grayscale brightness-75 hover:brightness-100 transition-all duration-1000"
               />
@@ -1057,7 +1064,11 @@ export default function App() {
             {/* Overlapping Frame */}
             <motion.div
               style={{
-                y: useTransform(useScroll().scrollYProgress, [0.6, 0.9], [0, 40]),
+                y: useTransform(
+                  useScroll().scrollYProgress,
+                  [0.6, 0.9],
+                  [0, 40]
+                ),
               }}
               className="absolute top-1/2 left-0 w-full h-1/2 border border-white/10 pointer-events-none -translate-y-1/2 translate-x-12 z-0"
             />
@@ -1068,15 +1079,19 @@ export default function App() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               style={{
-                y: useTransform(useScroll().scrollYProgress, [0.6, 0.9], [0, 120]),
+                y: useTransform(
+                  useScroll().scrollYProgress,
+                  [0.6, 0.9],
+                  [0, 120]
+                ),
               }}
               className="absolute -bottom-10 -right-4 w-1/2 aspect-square hidden lg:block overflow-hidden border-[12px] border-[#0a0a0a]"
             >
-              <img
+              {/* <img
                 src={aboutcvr}
                 alt="Cinematography Gear"
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-              />
+                className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 transition-all duration-700"
+              /> */}
             </motion.div>
 
             {/* Camera Coordinates Label */}
@@ -1114,9 +1129,7 @@ export default function App() {
                 }}
               >
                 Beyond the <br />
-                <span style={{ marginLeft: "0px" }}>
-                  Surface.
-                </span>
+                <span style={{ marginLeft: "0px" }}>Surface.</span>
               </h2>
 
               <div className="flex gap-12 flex-col lg:flex-row items-start">
@@ -1131,7 +1144,11 @@ export default function App() {
                       fontWeight: 300,
                     }}
                   >
-                    Guided by light and driven by emotion, I craft visuals that serve the soul of the story. I believe cinematography is more than just capturing images it's about creating a language of shadows and silhouettes that resonates long after the credits roll.
+                    Guided by light and driven by emotion, I craft visuals that
+                    serve the soul of the story. I believe cinematography is
+                    more than just capturing images it's about creating a
+                    language of shadows and silhouettes that resonates long
+                    after the credits roll.
                   </p>
 
                   <p
@@ -1144,7 +1161,9 @@ export default function App() {
                       fontWeight: 300,
                     }}
                   >
-                    Every frame is an opportunity to challenge perception. In a world of fleeting content, I aim for permanence visuals that demand attention and command gravity.
+                    Every frame is an opportunity to challenge perception. In a
+                    world of fleeting content, I aim for permanence visuals that
+                    demand attention and command gravity.
                   </p>
                 </div>
               </div>
@@ -1298,8 +1317,7 @@ export default function App() {
             whiteSpace: "nowrap",
             letterSpacing: "-0.04em",
           }}
-        >
-        </div>
+        ></div>
 
         <motion.div
           initial={{ opacity: 0 }}
