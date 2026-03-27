@@ -1104,8 +1104,8 @@ export default function App() {
             >
               <h2
                 style={{
-                  fontFamily: '"Cormorant Garamond", serif',
-                  fontSize: "clamp(48px, 6vw, 92px)",
+                  fontFamily: '"Montserrat", sans-serif',
+                  fontSize: "clamp(40px, 5vw, 78px)",
                   fontWeight: 300,
                   color: "#ffffff",
                   lineHeight: 0.9,
@@ -1114,7 +1114,7 @@ export default function App() {
                 }}
               >
                 Beyond the <br />
-                <span style={{ fontStyle: "italic", marginLeft: "40px" }}>
+                <span style={{ marginLeft: "0px" }}>
                   Surface.
                 </span>
               </h2>
