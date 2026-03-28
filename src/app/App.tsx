@@ -1328,7 +1328,7 @@ export default function App() {
         >
           <div className="w-full max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8" />
           <p
-            className="flex flex-col items-center gap-2 lg:block"
+            className="flex flex-col items-center gap-2 md:block"
             style={{
               fontFamily: '"Montserrat", sans-serif',
               fontSize: "11px",
@@ -1344,21 +1344,23 @@ export default function App() {
                 : ""}{" "}
               · Mukilan. All rights reserved
             </span>
-            <span className="hidden lg:inline mx-2">·</span>
-            <span>Designed & Developed by </span>
-            <a
-              href="https://rameshxt.pages.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "#EF233C",
-                cursor: "pointer",
-                transition: "opacity 0.2s",
-              }}
-              className="hover:opacity-80"
-            >
-              Ramesh XT
-            </a>
+            <span className="hidden md:inline mx-2">·</span>
+            <span>
+              Designed & Developed by{" "}
+              <a
+                href="https://rameshxt.pages.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: "#EF233C",
+                  cursor: "pointer",
+                  transition: "opacity 0.2s",
+                }}
+                className="hover:opacity-80"
+              >
+                Ramesh XT
+              </a>
+            </span>
           </p>
         </motion.div>
       </footer>
