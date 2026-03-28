@@ -1324,13 +1324,14 @@ export default function App() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="relative z-10"
+          className="relative z-10 w-full flex flex-col items-center"
         >
+          <div className="w-full max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8" />
           <p
-            className="flex flex-col items-center gap-2 lg:block"
+            className="flex flex-col items-center gap-2 md:block"
             style={{
               fontFamily: '"Montserrat", sans-serif',
-              fontSize: "10px",
+              fontSize: "11px",
               letterSpacing: "1.2px",
               color: "#555555",
               lineHeight: 2,
@@ -1341,23 +1342,25 @@ export default function App() {
               {new Date().getFullYear() > 2025
                 ? ` - ${new Date().getFullYear()}`
                 : ""}{" "}
-              · Mukilan
+              · Mukilan. All rights reserved
             </span>
-            <span className="hidden lg:inline mx-2">·</span>
-            <span className="opacity-80">Designed and developed by </span>
-            <a
-              href="https://rameshxt.pages.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "#EF233C",
-                cursor: "pointer",
-                transition: "opacity 0.2s",
-              }}
-              className="hover:opacity-80"
-            >
-              Ramesh XT
-            </a>
+            <span className="hidden md:inline mx-2">·</span>
+            <span>
+              Designed & Developed by{" "}
+              <a
+                href="https://rameshxt.pages.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: "#EF233C",
+                  cursor: "pointer",
+                  transition: "opacity 0.2s",
+                }}
+                className="hover:opacity-80"
+              >
+                Ramesh XT
+              </a>
+            </span>
           </p>
         </motion.div>
       </footer>
